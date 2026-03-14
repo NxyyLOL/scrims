@@ -12,9 +12,6 @@ local isInfiniteJumpActive = false
 local normalSpeed = 16
 local boostedSpeed = normalSpeed * 6
 
-local currentExpandKey = "E"
-local currentSpeedKey = "V"
-local currentJumpKey = "J"
 local HitboxSizeSlider = nil
 
 local player = Players.LocalPlayer
@@ -143,10 +140,6 @@ local JumpKeybind = SettingsTab:CreateKeybind({
 })
 
 local function expandHitboxes()
-	if humanoid then
-		humanoid.WalkSpeed = isSpeedBoostActive and boostedSpeed or normalSpeed
-	end
-	
 	for _, player in pairs(Players:GetPlayers()) do
 		if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
 			local humanoid = player.Character:FindFirstChild("Humanoid")
@@ -165,6 +158,15 @@ end
 
 RunService.RenderStepped:Connect(expandHitboxes)
 
+task.spawn(function()
+	while true do
+		task.wait(0.05)
+		if humanoid and isSpeedBoostActive then
+			humanoid.WalkSpeed = boostedSpeed
+		end
+	end
+end)
+
 UserInputService.JumpRequest:Connect(function()
 	if isInfiniteJumpActive then
 		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
@@ -172,16 +174,3 @@ UserInputService.JumpRequest:Connect(function()
 end)
 
 Rayfield:LoadConfiguration()
-
-task.delay(0.5, function()
-	if ExpandKeybind and ExpandKeybind.CurrentKeybind then
-		currentExpandKey = ExpandKeybind.CurrentKeybind
-	end
-	if SpeedKeybind and SpeedKeybind.CurrentKeybind then
-		currentSpeedKey = SpeedKeybind.CurrentKeybind
-	end
-	if JumpKeybind and JumpKeybind.CurrentKeybind then
-		currentJumpKey = JumpKeybind.CurrentKeybind
-	end
-	updateLabel()
-end)
