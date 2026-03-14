@@ -20,6 +20,7 @@ local Window = Rayfield:CreateWindow({
 	LoadingTitle = "SkidHub | Loading..",
 	LoadingSubtitle = "by nxyy",
 	Theme = "DarkBlue",
+	KeySystem = true,
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "skidhub",
@@ -30,6 +31,9 @@ local Window = Rayfield:CreateWindow({
         Invite = "",
         RememberJoins = false
     }
+	--[[KeySettings = {
+		FileName = "TempKeyhaha"
+	}]]
 })
 
 local MainTab = Window:CreateTab("Main", "gamepad-directional")
