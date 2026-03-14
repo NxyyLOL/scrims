@@ -127,3 +127,5 @@ UserInputService.InputBegan:Connect(function(input)
 		toggleUI()
 	end
 end)
+
+Rayfield:LoadConfiguration()
