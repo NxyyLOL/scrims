@@ -12,6 +12,11 @@ local isInfiniteJumpActive = false
 local normalSpeed = 16
 local boostedSpeed = normalSpeed * 6
 
+local currentExpandKey = "E"
+local currentSpeedKey = "V"
+local currentJumpKey = "J"
+local HitboxSizeSlider = nil
+
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
@@ -54,22 +59,24 @@ local ExpandToggle = MainTab:CreateToggle({
 	Flag = "ExpandHitboxes",
 	Callback = function(Value)
 		isExpanded = Value
-		expandHitboxes()
-	end,
-})
-
-local HitboxSizeSlider = MainTab:CreateSlider({
-	Name = "Hitbox Size",
-	Range = {5, 50},
-	Increment = 1,
-	CurrentValue = 5,
-	Flag = "HitboxSize",
-	Callback = function(Value)
-		hitboxSliderValue = Value
-		hitboxSize = Vector3.new(Value, Value, Value)
-		if isExpanded then
-			expandHitboxes()
+		if Value then
+			HitboxSizeSlider = MainTab:CreateSlider({
+				Name = "Hitbox Size",
+				Range = {5, 50},
+				Increment = 1,
+				CurrentValue = hitboxSliderValue,
+				Flag = "HitboxSize",
+				Callback = function(Value)
+					hitboxSliderValue = Value
+					hitboxSize = Vector3.new(Value, Value, Value)
+					expandHitboxes()
+				end,
+			})
+		elseif HitboxSizeSlider then
+			HitboxSizeSlider:Destroy()
+			HitboxSizeSlider = nil
 		end
+		expandHitboxes()
 	end,
 })
 
@@ -79,7 +86,6 @@ local SpeedToggle = MainTab:CreateToggle({
 	Flag = "SpeedBoost",
 	Callback = function(Value)
 		isSpeedBoostActive = Value
-		humanoid.WalkSpeed = isSpeedBoostActive and boostedSpeed or normalSpeed
 	end,
 })
 
@@ -101,6 +107,10 @@ local SettingsSection = SettingsTab:CreateSection("Configuration")
 
 local KeybindsSection = SettingsTab:CreateSection("Keybinds")
 
+local function updateLabel()
+	CloseMenuLabel:Set("Close the menu by using K")
+end
+
 local ExpandKeybind = SettingsTab:CreateKeybind({
 	Name = "Expand Hitboxes",
 	CurrentKeybind = "E",
@@ -119,7 +129,6 @@ local SpeedKeybind = SettingsTab:CreateKeybind({
 	Callback = function()
 		isSpeedBoostActive = not isSpeedBoostActive
 		SpeedToggle:Set(isSpeedBoostActive)
-		humanoid.WalkSpeed = isSpeedBoostActive and boostedSpeed or normalSpeed
 	end,
 })
 
@@ -134,6 +143,10 @@ local JumpKeybind = SettingsTab:CreateKeybind({
 })
 
 local function expandHitboxes()
+	if humanoid then
+		humanoid.WalkSpeed = isSpeedBoostActive and boostedSpeed or normalSpeed
+	end
+	
 	for _, player in pairs(Players:GetPlayers()) do
 		if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
 			local humanoid = player.Character:FindFirstChild("Humanoid")
@@ -159,3 +172,16 @@ UserInputService.JumpRequest:Connect(function()
 end)
 
 Rayfield:LoadConfiguration()
+
+task.delay(0.5, function()
+	if ExpandKeybind and ExpandKeybind.CurrentKeybind then
+		currentExpandKey = ExpandKeybind.CurrentKeybind
+	end
+	if SpeedKeybind and SpeedKeybind.CurrentKeybind then
+		currentSpeedKey = SpeedKeybind.CurrentKeybind
+	end
+	if JumpKeybind and JumpKeybind.CurrentKeybind then
+		currentJumpKey = JumpKeybind.CurrentKeybind
+	end
+	updateLabel()
+end)
