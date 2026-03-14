@@ -4,7 +4,8 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
-local hitboxSize = Vector3.new(12, 12, 12)
+local hitboxSliderValue = 12
+local hitboxSize = Vector3.new(hitboxSliderValue, hitboxSliderValue, hitboxSliderValue)
 local isExpanded = false
 local isSpeedBoostActive = false
 local isInfiniteJumpActive = false
@@ -22,6 +23,7 @@ local Window = Rayfield:CreateWindow({
 	Theme = "Default",
 	ShowText = "SkidHub",
 	KeySystem = true,
+	ToggleUIKeybind = "K",
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "skidhub",
@@ -56,6 +58,21 @@ local ExpandToggle = MainTab:CreateToggle({
 	end,
 })
 
+local HitboxSizeSlider = MainTab:CreateSlider({
+	Name = "Hitbox Size",
+	Range = {5, 50},
+	Increment = 1,
+	CurrentValue = 5,
+	Flag = "HitboxSize",
+	Callback = function(Value)
+		hitboxSliderValue = Value
+		hitboxSize = Vector3.new(Value, Value, Value)
+		if isExpanded then
+			expandHitboxes()
+		end
+	end,
+})
+
 local SpeedToggle = MainTab:CreateToggle({
 	Name = "Speed Boost (6x)",
 	CurrentValue = false,
@@ -75,7 +92,16 @@ local JumpToggle = MainTab:CreateToggle({
 	end,
 })
 
-local ExpandKeybind = MainTab:CreateKeybind({
+local MainDivider = MainTab:CreateDivider()
+
+local CloseMenuLabel = MainTab:CreateLabel("Close the menu by using K")
+
+local SettingsTab = Window:CreateTab("Settings", "settings")
+local SettingsSection = SettingsTab:CreateSection("Configuration")
+
+local KeybindsSection = SettingsTab:CreateSection("Keybinds")
+
+local ExpandKeybind = SettingsTab:CreateKeybind({
 	Name = "Expand Hitboxes",
 	CurrentKeybind = "E",
 	Flag = "ExpandHitboxesKeybind",
@@ -86,7 +112,7 @@ local ExpandKeybind = MainTab:CreateKeybind({
 	end,
 })
 
-local SpeedKeybind = MainTab:CreateKeybind({
+local SpeedKeybind = SettingsTab:CreateKeybind({
 	Name = "Speed Boost",
 	CurrentKeybind = "V",
 	Flag = "SpeedBoostKeybind",
@@ -97,7 +123,7 @@ local SpeedKeybind = MainTab:CreateKeybind({
 	end,
 })
 
-local JumpKeybind = MainTab:CreateKeybind({
+local JumpKeybind = SettingsTab:CreateKeybind({
 	Name = "Infinite Jump",
 	CurrentKeybind = "J",
 	Flag = "InfiniteJumpKeybind",
@@ -129,30 +155,6 @@ RunService.RenderStepped:Connect(expandHitboxes)
 UserInputService.JumpRequest:Connect(function()
 	if isInfiniteJumpActive then
 		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-	end
-end)
-
-local SettingsTab = Window:CreateTab("Settings", "settings")
-local SettingsSection = SettingsTab:CreateSection("Configuration")
-
-local uiKeybind = "LeftControl"
-
-local UIKeybind = SettingsTab:CreateKeybind({
-	Name = "Toggle UI",
-	CurrentKeybind = uiKeybind,
-	Flag = "UIKeybind",
-	Callback = function(Keybind)
-		uiKeybind = Keybind
-	end,
-})
-
-local function toggleUI()
-	Rayfield:ToggleUI()
-end
-
-UserInputService.InputBegan:Connect(function(input)
-	if input.KeyCode == Enum.KeyCode[uiKeybind] then
-		toggleUI()
 	end
 end)
 
