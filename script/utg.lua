@@ -19,7 +19,8 @@ local Window = Rayfield:CreateWindow({
 	Name = "SkidHub | untitled tag game",
 	LoadingTitle = "SkidHub | Loading..",
 	LoadingSubtitle = "by nxyy",
-	Theme = "DarkBlue",
+	Theme = "Default",
+	ShowText = "SkidHub",
 	KeySystem = true,
     ConfigurationSaving = {
         Enabled = true,
@@ -42,18 +43,13 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local MainTab = Window:CreateTab("Main", "gamepad-directional")
-local MainSection = MainTab:CreateSection("Player Mods")
+local MainTab = Window:CreateTab("Main", "user")
+local MainSection = MainTab:CreateSection("Player")
 
 local ExpandToggle = MainTab:CreateToggle({
 	Name = "Expand Hitboxes",
 	CurrentValue = false,
 	Flag = "ExpandHitboxes",
-	Keybind = {
-		Attached = true,
-		Desktop = Enum.KeyCode.E,
-		Mobile = nil,
-	},
 	Callback = function(Value)
 		isExpanded = Value
 		expandHitboxes()
@@ -64,11 +60,6 @@ local SpeedToggle = MainTab:CreateToggle({
 	Name = "Speed Boost (6x)",
 	CurrentValue = false,
 	Flag = "SpeedBoost",
-	Keybind = {
-		Attached = true,
-		Desktop = Enum.KeyCode.V,
-		Mobile = nil,
-	},
 	Callback = function(Value)
 		isSpeedBoostActive = Value
 		humanoid.WalkSpeed = isSpeedBoostActive and boostedSpeed or normalSpeed
@@ -79,13 +70,40 @@ local JumpToggle = MainTab:CreateToggle({
 	Name = "Infinite Jump",
 	CurrentValue = false,
 	Flag = "InfiniteJump",
-	Keybind = {
-		Attached = true,
-		Desktop = Enum.KeyCode.J,
-		Mobile = nil,
-	},
 	Callback = function(Value)
 		isInfiniteJumpActive = Value
+	end,
+})
+
+local ExpandKeybind = MainTab:CreateKeybind({
+	Name = "Expand Hitboxes",
+	CurrentKeybind = "E",
+	Flag = "ExpandHitboxesKeybind",
+	Callback = function()
+		isExpanded = not isExpanded
+		ExpandToggle:Set(isExpanded)
+		expandHitboxes()
+	end,
+})
+
+local SpeedKeybind = MainTab:CreateKeybind({
+	Name = "Speed Boost",
+	CurrentKeybind = "V",
+	Flag = "SpeedBoostKeybind",
+	Callback = function()
+		isSpeedBoostActive = not isSpeedBoostActive
+		SpeedToggle:Set(isSpeedBoostActive)
+		humanoid.WalkSpeed = isSpeedBoostActive and boostedSpeed or normalSpeed
+	end,
+})
+
+local JumpKeybind = MainTab:CreateKeybind({
+	Name = "Infinite Jump",
+	CurrentKeybind = "J",
+	Flag = "InfiniteJumpKeybind",
+	Callback = function()
+		isInfiniteJumpActive = not isInfiniteJumpActive
+		JumpToggle:Set(isInfiniteJumpActive)
 	end,
 })
 
@@ -117,7 +135,7 @@ end)
 local SettingsTab = Window:CreateTab("Settings", "settings")
 local SettingsSection = SettingsTab:CreateSection("Configuration")
 
-local uiKeybind = Enum.KeyCode.LeftControl
+local uiKeybind = "LeftControl"
 
 local UIKeybind = SettingsTab:CreateKeybind({
 	Name = "Toggle UI",
@@ -133,7 +151,7 @@ local function toggleUI()
 end
 
 UserInputService.InputBegan:Connect(function(input)
-	if input.KeyCode == uiKeybind then
+	if input.KeyCode == Enum.KeyCode[uiKeybind] then
 		toggleUI()
 	end
 end)
