@@ -57,21 +57,25 @@ local ExpandToggle = MainTab:CreateToggle({
 	Callback = function(Value)
 		isExpanded = Value
 		if Value then
-			HitboxSizeSlider = MainTab:CreateSlider({
-				Name = "Hitbox Size",
-				Range = {5, 50},
-				Increment = 1,
-				CurrentValue = hitboxSliderValue,
-				Flag = "HitboxSize",
-				Callback = function(Value)
-					hitboxSliderValue = Value
-					hitboxSize = Vector3.new(Value, Value, Value)
-					expandHitboxes()
-				end,
-			})
-		elseif HitboxSizeSlider then
-			HitboxSizeSlider:Destroy()
-			HitboxSizeSlider = nil
+			if not HitboxSizeSlider then
+				HitboxSizeSlider = MainTab:CreateSlider({
+					Name = "Hitbox Size",
+					Range = {5, 50},
+					Increment = 1,
+					CurrentValue = hitboxSliderValue,
+					Flag = "HitboxSize",
+					Callback = function(Value)
+						hitboxSliderValue = Value
+						hitboxSize = Vector3.new(Value, Value, Value)
+						expandHitboxes()
+					end,
+				})
+			end
+		else
+			if HitboxSizeSlider then
+				HitboxSizeSlider:Destroy()
+				HitboxSizeSlider = nil
+			end
 		end
 		expandHitboxes()
 	end,
@@ -161,8 +165,13 @@ RunService.RenderStepped:Connect(expandHitboxes)
 task.spawn(function()
 	while true do
 		task.wait(0.05)
-		if humanoid and isSpeedBoostActive then
-			humanoid.WalkSpeed = boostedSpeed
+		local currentCharacter = player.Character
+		local currentHumanoid = currentCharacter and currentCharacter:FindFirstChild("Humanoid")
+		if currentHumanoid then
+			if isSpeedBoostActive then
+				local currentSpeed = currentHumanoid.WalkSpeed
+				currentHumanoid.WalkSpeed = currentSpeed * 2
+			end
 		end
 	end
 end)
@@ -174,3 +183,20 @@ UserInputService.JumpRequest:Connect(function()
 end)
 
 Rayfield:LoadConfiguration()
+
+task.delay(0.5, function()
+	if ExpandToggle and ExpandToggle.CurrentValue and not HitboxSizeSlider then
+		HitboxSizeSlider = MainTab:CreateSlider({
+			Name = "Hitbox Size",
+			Range = {5, 50},
+			Increment = 1,
+			CurrentValue = hitboxSliderValue,
+			Flag = "HitboxSize",
+			Callback = function(Value)
+				hitboxSliderValue = Value
+				hitboxSize = Vector3.new(Value, Value, Value)
+				expandHitboxes()
+			end,
+		})
+	end
+end)
