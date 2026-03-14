@@ -30,11 +30,11 @@ local Window = Rayfield:CreateWindow({
         Enabled = true,
         Invite = "your",
         RememberJoins = false
-    }
+    },
 	KeySettings = {
 		Title = "dont know",
-		Subtitle = "hahah"
-		Note = "get key from discord"
+		Subtitle = "hahah",
+		Note = "get key from discord",
 		FileName = "TempKeyhaha",
 		SaveKey = false,
 		GrabKeyFromSite = false,
