@@ -1,4 +1,3 @@
-
 local Scripts = {
     [14044547200] = "https://raw.githubusercontent.com/NxyyLOL/scrims/refs/heads/main/script/utg.lua", -- utg
 }
