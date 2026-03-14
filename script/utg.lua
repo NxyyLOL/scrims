@@ -31,9 +31,15 @@ local Window = Rayfield:CreateWindow({
         Invite = "",
         RememberJoins = false
     }
-	--[[KeySettings = {
-		FileName = "TempKeyhaha"
-	}]]
+	KeySettings = {
+		Title = "dont know",
+		Subtitle = "hahah"
+		Note = "get key from discord"
+		FileName = "TempKeyhaha",
+		SaveKey = false,
+		GrabKeyFromSite = false,
+		Key = {"nxyymadeyou"}
+	}
 })
 
 local MainTab = Window:CreateTab("Main", "gamepad-directional")
