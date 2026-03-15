@@ -101,7 +101,7 @@ local JumpToggle = MainTab:CreateToggle({
 
 local MainDivider = MainTab:CreateDivider()
 
-local CloseMenuLabel = MainTab:CreateLabel("Close the menu by using K")
+local CloseMenuLabel = MainTab:CreateLabel("Close the menu by using K", "info")
 
 local SettingsTab = Window:CreateTab("Settings", "settings")
 local SettingsSection = SettingsTab:CreateSection("Configuration")
@@ -109,7 +109,7 @@ local SettingsSection = SettingsTab:CreateSection("Configuration")
 local KeybindsSection = SettingsTab:CreateSection("Keybinds")
 
 local function updateLabel()
-	CloseMenuLabel:Set("Close the menu by using K")
+	CloseMenuLabel:Set("Close the menu by using K", "info", Color3.fromRGB(255, 255, 255), false)
 end
 
 local ExpandKeybind = SettingsTab:CreateKeybind({

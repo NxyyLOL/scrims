@@ -18,6 +18,12 @@ local window = rayfield:CreateWindow({
     Theme="Ocean",
     DisableRayfieldPrompts=true,
     ToggleUIKeybind="K",
+    
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "skidhub",
+        FileName = "utgv2"
+    },
 
     Discord = {
         Enabled = true,
@@ -27,21 +33,21 @@ local window = rayfield:CreateWindow({
 
 })
 
-local tag = window:CreateTab({Name="Tag Cheats"})
-local movement = window:CreateTab({Name="Movement"})
-local experi = window:CreateTab({Name="Experimental"})
-local misc = window:CreateTab({Name="Misc"})
+local tag = window:CreateTab("Tag Cheats", "target")
+local movement = window:CreateTab("Movement", "footprints")
+local experi = window:CreateTab("Experimental", "flask-conical")
+local misc = window:CreateTab("Misc", "settings")
 
-local hitboxes = tag:CreateSection({Name="Hitboxes"})
-local autotag = tag:CreateSection({Name="Autotag [BETA]"})
-local _humanoid = movement:CreateSection({Name="Humanoid"})
-local physical = movement:CreateSection({Name="Physical"})
-local exp_main = experi:CreateSection({Name="Main"})
-local visuals = experi:CreateSection({Name="Visuals [BETA]"})
+local hitboxes = tag:CreateSection("Hitboxes")
+local autotag = tag:CreateSection("Autotag [BETA]")
+local _humanoid = movement:CreateSection("Humanoid")
+local physical = movement:CreateSection("Physical")
+local exp_main = experi:CreateSection("Main")
+local visuals = experi:CreateSection("Visuals [BETA]")
 
 local hbcon = false
 local hbsize = 2
-hitboxes:CreateToggle({
+local htoggle = hitboxes:CreateToggle({
 	Name="Hitbox Extend",
 	CurrentValue=false,
     Flag="Hitbox1",
@@ -53,7 +59,7 @@ hitboxes:CreateToggle({
 		end
 	end,
 })
-hitboxes:CreateSlider({
+local hslider = hitboxes:CreateSlider({
 	Name="Hitbox Size",
     Range={0, 15},
 	CurrentValue=2,
@@ -290,7 +296,7 @@ visuals:CreateDropdown({
 	Name="Tracer Origin",
 	Options={"Bottom","Middle","Top","Mouse"},
 	CurrentOption={"Bottom"},
-    MultipleOptions=fa1lse,
+    MultipleOptions=false,
 	Callback=function(option)
 		tracerorigin = option
 	end,
