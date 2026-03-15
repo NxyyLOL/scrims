@@ -78,13 +78,9 @@ local at_runnercheck = true
 local autotoggle = tag:CreateToggle({
 	Name="AutoTag",
 	CurrentValue=false,
-    Flag="AutoTag1",
+	Flag="AutoTag1",
 	Callback=function(value)
-		if value then
-			atcon = true
-		else
-			atcon = false
-		end
+		atcon = value
 	end,
 })
 local autoteamtoggle = tag:CreateToggle({
@@ -479,8 +475,10 @@ connect(game:GetService("UserInputService").JumpRequest,function()
 	end
 end)
 connect(game:GetService("RunService").Heartbeat,function()
-	local youroot = humanoid.RootPart
-	if atcon then
+	local currentCharacter = you.Character
+	local currentHumanoid = currentCharacter and currentCharacter:FindFirstChildOfClass("Humanoid")
+	local youroot = currentHumanoid and currentHumanoid.RootPart
+	if atcon and youroot then
 		for _,i in next,game.Players:GetPlayers() do
 			if i ~= you then
 				if at_runnercheck then
