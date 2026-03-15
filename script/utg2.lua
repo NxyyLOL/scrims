@@ -11,31 +11,40 @@ local lighting = game.Lighting
 local char = you.Character
 local humanoid = char:FindFirstChildOfClass("Humanoid")
 
-local lib = loadstring(game:HttpGet('https://raw.githubusercontent.com/OrionLibrary/Orion/refs/heads/main/source.lua'))()
-local window = lib:MakeWindow({
-	Name="Ranxware | UTG V3.1",
-	SaveConfig=false,
-	IntroEnabled=true,
-	IntroText="Ranxware V2"
+local rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local window = rayfield:CreateWindow({
+	Name="SkidHub | utg V2",
+    ShowText="SkidHub",
+    Theme="Ocean",
+    DisableRayfieldPrompts=true,
+    ToggleUIKeybind="K",
+
+    Discord = {
+        Enabled = true,
+        Invite = "your",
+        RememberJoins = false
+    },
+
 })
 
-local tag = window:MakeTab({Name="Tag Cheats"})
-local movement = window:MakeTab({Name="Movement"})
-local experi = window:MakeTab({Name="Experimental"})
-local misc = window:MakeTab({Name="Misc"})
+local tag = window:CreateTab({Name="Tag Cheats"})
+local movement = window:CreateTab({Name="Movement"})
+local experi = window:CreateTab({Name="Experimental"})
+local misc = window:CreateTab({Name="Misc"})
 
-local hitboxes = tag:AddSection({Name="Hitboxes"})
-local autotag = tag:AddSection({Name="Autotag [BETA]"})
-local _humanoid = movement:AddSection({Name="Humanoid"})
-local physical = movement:AddSection({Name="Physical"})
-local exp_main = experi:AddSection({Name="Main"})
-local visuals = experi:AddSection({Name="Visuals [BETA]"})
+local hitboxes = tag:CreateSection({Name="Hitboxes"})
+local autotag = tag:CreateSection({Name="Autotag [BETA]"})
+local _humanoid = movement:CreateSection({Name="Humanoid"})
+local physical = movement:CreateSection({Name="Physical"})
+local exp_main = experi:CreateSection({Name="Main"})
+local visuals = experi:CreateSection({Name="Visuals [BETA]"})
 
 local hbcon = false
 local hbsize = 2
-hitboxes:AddToggle({
+hitboxes:CreateToggle({
 	Name="Hitbox Extend",
-	Default=false,
+	CurrentValue=false,
+    Flag="Hitbox1",
 	Callback=function(value)
 		if value then
 			hbcon = true
@@ -44,12 +53,13 @@ hitboxes:AddToggle({
 		end
 	end,
 })
-hitboxes:AddSlider({
+hitboxes:CreateSlider({
 	Name="Hitbox Size",
-	Min=2,Max=15,
-	Default=2,
+    Range={0, 15},
+	CurrentValue=2,
 	Increment=1,
-	ValueName="studs",
+	Suffix="studs",
+    Flag="HitboxSize1",
 	Callback=function(value)
 		hbsize = value
 	end,
@@ -57,9 +67,10 @@ hitboxes:AddSlider({
 local atcon = false
 local at_teamcheck = false
 local at_runnercheck = true
-autotag:AddToggle({
-	Name="Autotag",
-	Default=false,
+autotag:CreateToggle({
+	Name="AutoTag",
+	CurrentValue=false,
+    Flag="AutoTag1",
 	Callback=function(value)
 		if value then
 			atcon = true
@@ -68,16 +79,18 @@ autotag:AddToggle({
 		end
 	end,
 })
-autotag:AddToggle({
+autotag:CreateToggle({
 	Name="Team Check",
-	Default=false,
+	CurrentValue=false,
+    Flag="AutoTagTeamCheck1",
 	Callback=function(value)
 		at_teamcheck = value
 	end,
 })
-autotag:AddToggle({
+autotag:CreateToggle({
 	Name="Runner/Alive Check",
-	Default=true,
+	CurrentValue=true,
+    Flag="AutoTagPlayerCheck1",
 	Callback=function(value)
 		at_runnercheck = value
 	end,
@@ -86,9 +99,10 @@ autotag:AddToggle({
 local wsval,jpval = 30,32
 local wscon,jpcon = false,false
 local changeWs,changeJp
-_humanoid:AddToggle({
+_humanoid:CreateToggle({
 	Name="Walkspeed",
-	Default=false,
+	CurrentValue=false,
+    Flag="Walkspeed1",
 	Callback=function(value)
 		if value then
 			wscon = true
@@ -101,18 +115,20 @@ _humanoid:AddToggle({
 		end
 	end,
 })
-_humanoid:AddSlider({
+_humanoid:CreateSlider({
 	Name="Walkspeed Value",
-	Min=26,Max=65,
-	Default=30,
+    Range={26, 65},
+	CurrentValue=30,
 	Increment=1,
+    Flag="WalkspeedValue1",
 	Callback=function(value)
 		wsval = value
 	end,
 })
-_humanoid:AddToggle({
+_humanoid:CreateToggle({
 	Name="Jumppower",
-	Default=false,
+	CurrentValue=false,
+    Flag="Jumppower1",
 	Callback=function(value)
 		if value then
 			jpcon = true
@@ -126,10 +142,10 @@ _humanoid:AddToggle({
 		end
 	end,
 })
-_humanoid:AddSlider({
+_humanoid:CreateSlider({
 	Name="Jumppower Value",
-	Min=30,Max=90,
-	Default=32,
+    Range={30, 90},
+	CurrentValue=32,
 	Increment=1,
 	Callback=function(value)
 		jpval = value
@@ -138,9 +154,9 @@ _humanoid:AddSlider({
 local fclimbcon,noclipcon = false,false
 local fmovecon = false
 local infj = false
-physical:AddToggle({
+physical:CreateToggle({
 	Name="Infinite Jump",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			infj = true
@@ -149,9 +165,9 @@ physical:AddToggle({
 		end
 	end,
 })
-physical:AddToggle({
+physical:CreateToggle({
 	Name="Fast Climb",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			fclimbcon = true
@@ -160,9 +176,9 @@ physical:AddToggle({
 		end
 	end,
 })
-physical:AddToggle({
+physical:CreateToggle({
 	Name="Free Move",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			fmovecon = true
@@ -171,9 +187,9 @@ physical:AddToggle({
 		end
 	end,
 })
-physical:AddToggle({
+physical:CreateToggle({
 	Name="Noclip",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			noclipcon = true
@@ -184,9 +200,9 @@ physical:AddToggle({
 })
 
 local atcoin = false
-exp_main:AddToggle({
+exp_main:CreateToggle({
 	Name="Autocollect Coins [ALIVE ONLY!]",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			atcoin = true
@@ -204,9 +220,9 @@ local roles = false
 local teamcheck = true
 local tracerorigin = "Bottom"
 local rainbow_ = false
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Enable ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			esp = true
@@ -215,9 +231,9 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Box ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			boxes = true
@@ -226,9 +242,9 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Cham ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			chams = true
@@ -237,9 +253,9 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Tracer ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			tracers = true
@@ -248,9 +264,9 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Name ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			names = true
@@ -259,9 +275,9 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Role ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			roles = true
@@ -270,17 +286,18 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddDropdown({
+visuals:CreateDropdown({
 	Name="Tracer Origin",
 	Options={"Bottom","Middle","Top","Mouse"},
-	Default="Bottom",
+	CurrentOption={"Bottom"},
+    MultipleOptions=fa1lse,
 	Callback=function(option)
 		tracerorigin = option
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Team Check",
-	Default=true,
+	CurrentValue=true,
 	Callback=function(value)
 		if value then
 			teamcheck = true
@@ -289,9 +306,9 @@ visuals:AddToggle({
 		end
 	end,
 })
-visuals:AddToggle({
+visuals:CreateToggle({
 	Name="Rainbow ESP",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			rainbow_ = true
@@ -302,9 +319,9 @@ visuals:AddToggle({
 })
 
 local fbcon = false
-misc:AddToggle({
+misc:CreateToggle({
 	Name="Fullbright",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			fbcon = true
@@ -314,9 +331,9 @@ misc:AddToggle({
 	end,
 })
 local acccon = false
-misc:AddToggle({
+misc:CreateToggle({
 	Name="Anti-Color Change",
-	Default=false,
+	CurrentValue=false,
 	Callback=function(value)
 		if value then
 			acccon = true
@@ -711,7 +728,7 @@ connect(game.Players.PlayerAdded,function(i)
 	end
 end)
 
-lib:Init()
+rayfield:LoadConfiguration()
 
 --[[
 
