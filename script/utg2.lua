@@ -52,13 +52,9 @@ local hbsize = 2
 local htoggle = tag:CreateToggle({
 	Name="Hitbox Extend",
 	CurrentValue=false,
-    Flag="Hitbox1",
+	Flag="Hitbox1",
 	Callback=function(value)
-		if value then
-			hbcon = true
-		else
-			hbcon = false
-		end
+		hbcon = value
 	end,
 })
 local hslider = tag:CreateSlider({
@@ -106,17 +102,9 @@ local changeWs,changeJp
 local walktoggle = movement:CreateToggle({
 	Name="Walkspeed",
 	CurrentValue=false,
-    Flag="Walkspeed1",
+	Flag="Walkspeed1",
 	Callback=function(value)
-		if value then
-			wscon = true
-			changeWs = function()
-				humanoid.WalkSpeed = wsval
-			end
-			changeWs()
-		else
-			wscon = false
-		end
+		wscon = value
 	end,
 })
 local walkslider = movement:CreateSlider({
@@ -132,18 +120,9 @@ local walkslider = movement:CreateSlider({
 local jumptoggle = movement:CreateToggle({
 	Name="Jumppower",
 	CurrentValue=false,
-    Flag="Jumppower1",
+	Flag="Jumppower1",
 	Callback=function(value)
-		if value then
-			jpcon = true
-			changeJp = function()
-				humanoid.UseJumpPower = true
-				humanoid.JumpPower = jpval
-			end
-			changeJp()
-		else
-			jpcon = false
-		end
+		jpcon = value
 	end,
 })
 local jumpslider = movement:CreateSlider({
@@ -163,11 +142,7 @@ physical:CreateToggle({
 	CurrentValue=false,
 	Flag="InfiniteJump1",
 	Callback=function(value)
-		if value then
-			infj = true
-		else
-			infj = false
-		end
+		infj = value
 	end,
 })
 physical:CreateToggle({
@@ -175,11 +150,7 @@ physical:CreateToggle({
 	CurrentValue=false,
 	Flag="FastClimb1",
 	Callback=function(value)
-		if value then
-			fclimbcon = true
-		else
-			fclimbcon = false
-		end
+		fclimbcon = value
 	end,
 })
 physical:CreateToggle({
@@ -187,11 +158,7 @@ physical:CreateToggle({
 	CurrentValue=false,
 	Flag="FreeMove1",
 	Callback=function(value)
-		if value then
-			fmovecon = true
-		else
-			fmovecon = false
-		end
+		fmovecon = value
 	end,
 })
 physical:CreateToggle({
@@ -199,11 +166,7 @@ physical:CreateToggle({
 	CurrentValue=false,
 	Flag="Noclip1",
 	Callback=function(value)
-		if value then
-			noclipcon = true
-		else
-			noclipcon = false
-		end
+		noclipcon = value
 	end,
 })
 
@@ -213,11 +176,7 @@ local autocoin = experi:CreateToggle({
 	CurrentValue=false,
 	Flag="AutoCollectCoins1",
 	Callback=function(value)
-		if value then
-			atcoin = true
-		else
-			atcoin = false
-		end
+		atcoin = value
 	end,
 })
 local esp = false
@@ -234,11 +193,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="EnableESP1",
 	Callback=function(value)
-		if value then
-			esp = true
-		else
-			esp = false
-		end
+		esp = value
 	end,
 })
 visuals:CreateToggle({
@@ -246,11 +201,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="BoxESP1",
 	Callback=function(value)
-		if value then
-			boxes = true
-		else
-			boxes = false
-		end
+		boxes = value
 	end,
 })
 visuals:CreateToggle({
@@ -258,11 +209,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="ChamESP1",
 	Callback=function(value)
-		if value then
-			chams = true
-		else
-			chams = false
-		end
+		chams = value
 	end,
 })
 visuals:CreateToggle({
@@ -270,11 +217,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="TracerESP1",
 	Callback=function(value)
-		if value then
-			tracers = true
-		else
-			tracers = false
-		end
+		tracers = value
 	end,
 })
 visuals:CreateToggle({
@@ -282,11 +225,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="NameESP1",
 	Callback=function(value)
-		if value then
-			names = true
-		else
-			names = false
-		end
+		names = value
 	end,
 })
 visuals:CreateToggle({
@@ -294,11 +233,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="RoleESP1",
 	Callback=function(value)
-		if value then
-			roles = true
-		else
-			roles = false
-		end
+		roles = value
 	end,
 })
 visuals:CreateDropdown({
@@ -316,11 +251,7 @@ visuals:CreateToggle({
 	CurrentValue=true,
 	Flag="VisualsTeamCheck1",
 	Callback=function(value)
-		if value then
-			teamcheck = true
-		else
-			teamcheck = false
-		end
+		teamcheck = value
 	end,
 })
 visuals:CreateToggle({
@@ -328,11 +259,7 @@ visuals:CreateToggle({
 	CurrentValue=false,
 	Flag="RainbowESP1",
 	Callback=function(value)
-		if value then
-			rainbow_ = true
-		else
-			rainbow_ = false
-		end
+		rainbow_ = value
 	end
 })
 
@@ -342,11 +269,7 @@ misc:CreateToggle({
 	CurrentValue=false,
 	Flag="Fullbright1",
 	Callback=function(value)
-		if value then
-			fbcon = true
-		else
-			fbcon = false
-		end
+		fbcon = value
 	end,
 })
 local acccon = false
@@ -355,18 +278,16 @@ misc:CreateToggle({
 	CurrentValue=false,
 	Flag="AntiColorChange1",
 	Callback=function(value)
-		if value then
-			acccon = true
-		else
-			acccon = false
-		end
+		acccon = value
 	end,
 })
 
 
+local Connections = {}
+
 local function connect(signal, callback)
 	local connection = signal:Connect(callback)
-	table.insert(lib.Connections, connection)
+	table.insert(Connections, connection)
 	return connection
 end
 
