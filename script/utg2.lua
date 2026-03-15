@@ -704,6 +704,31 @@ connect(game.Players.PlayerAdded,function(i)
 end)
 
 rayfield:LoadConfiguration()
+
+local PanicKey = Enum.KeyCode.Minus
+local UISDestroyed = false
+
+local function destroyUI()
+	if not UISDestroyed then
+		UISDestroyed = true
+		print("[DEBUG] PANIC KEY PRESSED - Destroying UI...")
+		
+		if rayfield.Destroy then
+			rayfield:Destroy()
+		elseif window.Destroy then
+			window:Destroy()
+		end
+		
+		print("[DEBUG] UI Destroyed!")
+	end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+	if not gameProcessed and input.KeyCode == PanicKey then
+		destroyUI()
+	end
+end)
+
 print("[DEBUG] Script fully loaded!")
 
 --[[
