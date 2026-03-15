@@ -13,23 +13,25 @@ local humanoid = char:FindFirstChildOfClass("Humanoid")
 
 local rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local window = rayfield:CreateWindow({
-	Name="SkidHub | utg V2",
-    ShowText="SkidHub",
-    Theme="Ocean",
-    DisableRayfieldPrompts=true,
-    ToggleUIKeybind="K",
-    
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "skidhub",
-        FileName = "utgv2"
-    },
+	Name = "SkidHub | utg V2",
+	LoadingTitle = "SkidHub",
+	LoadingSubtitle = "by nxyy",
+	ShowText = "SkidHub",
+	Theme = "Ocean",
+	DisableRayfieldPrompts = true,
+	ToggleUIKeybind = "K",
 
-    Discord = {
-        Enabled = true,
-        Invite = "your",
-        RememberJoins = false
-    },
+	ConfigurationSaving = {
+		Enabled = true,
+		FolderName = "skidhub",
+		FileName = "utgv2"
+	},
+
+	Discord = {
+		Enabled = true,
+		Invite = "your",
+		RememberJoins = false
+	},
 
 })
 
@@ -47,7 +49,7 @@ local visuals = experi:CreateSection("Visuals [BETA]")
 
 local hbcon = false
 local hbsize = 2
-local htoggle = hitboxes:CreateToggle({
+local htoggle = tag:CreateToggle({
 	Name="Hitbox Extend",
 	CurrentValue=false,
     Flag="Hitbox1",
@@ -59,7 +61,7 @@ local htoggle = hitboxes:CreateToggle({
 		end
 	end,
 })
-local hslider = hitboxes:CreateSlider({
+local hslider = tag:CreateSlider({
 	Name="Hitbox Size",
     Range={0, 15},
 	CurrentValue=2,
@@ -73,7 +75,7 @@ local hslider = hitboxes:CreateSlider({
 local atcon = false
 local at_teamcheck = false
 local at_runnercheck = true
-autotag:CreateToggle({
+local autotoggle = tag:CreateToggle({
 	Name="AutoTag",
 	CurrentValue=false,
     Flag="AutoTag1",
@@ -85,7 +87,7 @@ autotag:CreateToggle({
 		end
 	end,
 })
-autotag:CreateToggle({
+local autoteamtoggle = tag:CreateToggle({
 	Name="Team Check",
 	CurrentValue=false,
     Flag="AutoTagTeamCheck1",
@@ -93,7 +95,7 @@ autotag:CreateToggle({
 		at_teamcheck = value
 	end,
 })
-autotag:CreateToggle({
+local autoplayertoggle = tag:CreateToggle({
 	Name="Runner/Alive Check",
 	CurrentValue=true,
     Flag="AutoTagPlayerCheck1",
@@ -105,7 +107,7 @@ autotag:CreateToggle({
 local wsval,jpval = 30,32
 local wscon,jpcon = false,false
 local changeWs,changeJp
-_humanoid:CreateToggle({
+local walktoggle = movement:CreateToggle({
 	Name="Walkspeed",
 	CurrentValue=false,
     Flag="Walkspeed1",
@@ -121,7 +123,7 @@ _humanoid:CreateToggle({
 		end
 	end,
 })
-_humanoid:CreateSlider({
+local walkslider = movement:CreateSlider({
 	Name="Walkspeed Value",
     Range={26, 65},
 	CurrentValue=30,
@@ -131,7 +133,7 @@ _humanoid:CreateSlider({
 		wsval = value
 	end,
 })
-_humanoid:CreateToggle({
+local jumptoggle = movement:CreateToggle({
 	Name="Jumppower",
 	CurrentValue=false,
     Flag="Jumppower1",
@@ -148,7 +150,7 @@ _humanoid:CreateToggle({
 		end
 	end,
 })
-_humanoid:CreateSlider({
+local jumpslider = movement:CreateSlider({
 	Name="Jumppower Value",
     Range={30, 90},
 	CurrentValue=32,
@@ -163,6 +165,7 @@ local infj = false
 physical:CreateToggle({
 	Name="Infinite Jump",
 	CurrentValue=false,
+	Flag="InfiniteJump1",
 	Callback=function(value)
 		if value then
 			infj = true
@@ -174,6 +177,7 @@ physical:CreateToggle({
 physical:CreateToggle({
 	Name="Fast Climb",
 	CurrentValue=false,
+	Flag="FastClimb1",
 	Callback=function(value)
 		if value then
 			fclimbcon = true
@@ -185,6 +189,7 @@ physical:CreateToggle({
 physical:CreateToggle({
 	Name="Free Move",
 	CurrentValue=false,
+	Flag="FreeMove1",
 	Callback=function(value)
 		if value then
 			fmovecon = true
@@ -196,6 +201,7 @@ physical:CreateToggle({
 physical:CreateToggle({
 	Name="Noclip",
 	CurrentValue=false,
+	Flag="Noclip1",
 	Callback=function(value)
 		if value then
 			noclipcon = true
@@ -206,9 +212,10 @@ physical:CreateToggle({
 })
 
 local atcoin = false
-exp_main:CreateToggle({
+local autocoin = experi:CreateToggle({
 	Name="Autocollect Coins [ALIVE ONLY!]",
 	CurrentValue=false,
+	Flag="AutoCollectCoins1",
 	Callback=function(value)
 		if value then
 			atcoin = true
@@ -229,6 +236,7 @@ local rainbow_ = false
 visuals:CreateToggle({
 	Name="Enable ESP",
 	CurrentValue=false,
+	Flag="EnableESP1",
 	Callback=function(value)
 		if value then
 			esp = true
@@ -240,6 +248,7 @@ visuals:CreateToggle({
 visuals:CreateToggle({
 	Name="Box ESP",
 	CurrentValue=false,
+	Flag="BoxESP1",
 	Callback=function(value)
 		if value then
 			boxes = true
@@ -251,6 +260,7 @@ visuals:CreateToggle({
 visuals:CreateToggle({
 	Name="Cham ESP",
 	CurrentValue=false,
+	Flag="ChamESP1",
 	Callback=function(value)
 		if value then
 			chams = true
@@ -262,6 +272,7 @@ visuals:CreateToggle({
 visuals:CreateToggle({
 	Name="Tracer ESP",
 	CurrentValue=false,
+	Flag="TracerESP1",
 	Callback=function(value)
 		if value then
 			tracers = true
@@ -273,6 +284,7 @@ visuals:CreateToggle({
 visuals:CreateToggle({
 	Name="Name ESP",
 	CurrentValue=false,
+	Flag="NameESP1",
 	Callback=function(value)
 		if value then
 			names = true
@@ -284,6 +296,7 @@ visuals:CreateToggle({
 visuals:CreateToggle({
 	Name="Role ESP",
 	CurrentValue=false,
+	Flag="RoleESP1",
 	Callback=function(value)
 		if value then
 			roles = true
@@ -296,7 +309,8 @@ visuals:CreateDropdown({
 	Name="Tracer Origin",
 	Options={"Bottom","Middle","Top","Mouse"},
 	CurrentOption={"Bottom"},
-    MultipleOptions=false,
+	MultipleOptions=false,
+	Flag="TracerOrigin1",
 	Callback=function(option)
 		tracerorigin = option
 	end,
@@ -304,6 +318,7 @@ visuals:CreateDropdown({
 visuals:CreateToggle({
 	Name="Team Check",
 	CurrentValue=true,
+	Flag="VisualsTeamCheck1",
 	Callback=function(value)
 		if value then
 			teamcheck = true
@@ -315,6 +330,7 @@ visuals:CreateToggle({
 visuals:CreateToggle({
 	Name="Rainbow ESP",
 	CurrentValue=false,
+	Flag="RainbowESP1",
 	Callback=function(value)
 		if value then
 			rainbow_ = true
@@ -328,6 +344,7 @@ local fbcon = false
 misc:CreateToggle({
 	Name="Fullbright",
 	CurrentValue=false,
+	Flag="Fullbright1",
 	Callback=function(value)
 		if value then
 			fbcon = true
@@ -340,6 +357,7 @@ local acccon = false
 misc:CreateToggle({
 	Name="Anti-Color Change",
 	CurrentValue=false,
+	Flag="AntiColorChange1",
 	Callback=function(value)
 		if value then
 			acccon = true
@@ -349,9 +367,10 @@ misc:CreateToggle({
 	end,
 })
 
+
 local function connect(signal, callback)
 	local connection = signal:Connect(callback)
-	table.insert(lib.Connections,connection)
+	table.insert(lib.Connections, connection)
 	return connection
 end
 
