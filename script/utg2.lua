@@ -6,12 +6,20 @@ for _,__error in next,getconnections(game:GetService("ScriptContext").Error) do
 	__error:Disable()
 end
 
+print("[DEBUG] Script started")
+
 local you = game.Players.LocalPlayer
+print("[DEBUG] LocalPlayer:", you.Name)
 local lighting = game.Lighting
 local char = you.Character
+print("[DEBUG] Character:", char)
 local humanoid = char:FindFirstChildOfClass("Humanoid")
+print("[DEBUG] Humanoid:", humanoid)
 
+print("[DEBUG] Loading Rayfield...")
 local rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+print("[DEBUG] Rayfield loaded successfully")
+
 local window = rayfield:CreateWindow({
 	Name = "SkidHub | utg V2",
 	LoadingTitle = "SkidHub",
@@ -34,29 +42,48 @@ local window = rayfield:CreateWindow({
 	},
 
 })
+print("[DEBUG] Window created")
+
+print("[DEBUG] Waiting for Rayfield to initialize...")
+task.wait(0.5)
+print("[DEBUG] Creating tabs...")
 
 local tag = window:CreateTab("Tag Cheats", "target")
+print("[DEBUG] Tab 'Tag Cheats' created, type:", type(tag))
 local movement = window:CreateTab("Movement", "footprints")
+print("[DEBUG] Tab 'Movement' created")
 local experi = window:CreateTab("Experimental", "flask-conical")
+print("[DEBUG] Tab 'Experimental' created")
 local misc = window:CreateTab("Misc", "settings")
+print("[DEBUG] Tab 'Misc' created, type:", type(misc))
 
+print("[DEBUG] Creating sections...")
 local hitboxes = tag:CreateSection("Hitboxes")
+print("[DEBUG] Section 'Hitboxes' created, type:", type(hitboxes))
 local autotag = tag:CreateSection("Autotag [BETA]")
+print("[DEBUG] Section 'Autotag' created")
 local _humanoid = movement:CreateSection("Humanoid")
+print("[DEBUG] Section 'Humanoid' created")
 local physical = movement:CreateSection("Physical")
+print("[DEBUG] Section 'Physical' created")
 local exp_main = experi:CreateSection("Main")
+print("[DEBUG] Section 'Main' created")
 local visuals = experi:CreateSection("Visuals [BETA]")
+print("[DEBUG] Section 'Visuals' created")
 
 local hbcon = false
 local hbsize = 2
+print("[DEBUG] Creating Hitbox Extend toggle...")
 local htoggle = tag:CreateToggle({
 	Name="Hitbox Extend",
 	CurrentValue=false,
 	Flag="Hitbox1",
 	Callback=function(value)
+		print("[DEBUG] Hitbox Extend callback:", value)
 		hbcon = value
 	end,
 })
+print("[DEBUG] Hitbox Extend toggle created")
 local hslider = tag:CreateSlider({
 	Name="Hitbox Size",
     Range={0, 15},
@@ -75,9 +102,13 @@ local autotoggle = tag:CreateToggle({
 	Name="AutoTag",
 	CurrentValue=false,
 	Flag="AutoTag1",
-	Callback=function(value)
-		atcon = value
-	end,
+	Callback=function(Value)
+		if Value == true
+		then atcon = true
+		elseif Value == false
+		then atcon = false
+		end
+	end
 })
 local autoteamtoggle = tag:CreateToggle({
 	Name="Team Check",
@@ -326,6 +357,7 @@ connect(you.CharacterAdded,function(_nchar)
 end)
 connect(game:GetService("RunService").Stepped,function()
 	if hbcon then
+		print("[DEBUG] Hitbox Extend ACTIVE - size:", hbsize)
 		for _,i in next,game.Players:GetPlayers() do
 			if i ~= you then
 				local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
@@ -376,7 +408,8 @@ connect(game:GetService("RunService").Stepped,function()
 		end
 	end
 	if atcoin then
-		if you.PlayerRole.Value ~= "Dead" then -- alive check policy
+		print("[DEBUG] Autocollect Coins ACTIVE")
+		if you.PlayerRole.Value ~= "Dead" then
 			for _,v in pairs(workspace:GetDescendants()) do
 				if v:IsA("MeshPart") and v.MeshId == "rbxassetid://8483581926" then
 					humanoid.RootPart.CFrame = v.CFrame
@@ -671,6 +704,7 @@ connect(game.Players.PlayerAdded,function(i)
 end)
 
 rayfield:LoadConfiguration()
+print("[DEBUG] Script fully loaded!")
 
 --[[
 
