@@ -283,11 +283,9 @@ misc:CreateToggle({
 })
 
 
-local Connections = {}
-
 local function connect(signal, callback)
 	local connection = signal:Connect(callback)
-	table.insert(Connections, connection)
+	table.insert(lib.Connections, connection)
 	return connection
 end
 
