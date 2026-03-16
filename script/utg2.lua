@@ -1,25 +1,16 @@
 -- Version: 3.1
 
-
 -- no annoying errors :|
 for _,__error in next,getconnections(game:GetService("ScriptContext").Error) do
 	__error:Disable()
 end
 
-print("[DEBUG] Script started")
-
 local you = game.Players.LocalPlayer
-print("[DEBUG] LocalPlayer:", you.Name)
 local lighting = game.Lighting
 local char = you.Character
-print("[DEBUG] Character:", char)
 local humanoid = char:FindFirstChildOfClass("Humanoid")
-print("[DEBUG] Humanoid:", humanoid)
 
-print("[DEBUG] Loading Rayfield...")
 local rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-print("[DEBUG] Rayfield loaded successfully")
-
 local window = rayfield:CreateWindow({
 	Name = "SkidHub | utg V2",
 	LoadingTitle = "SkidHub",
@@ -42,206 +33,144 @@ local window = rayfield:CreateWindow({
 	},
 
 })
-print("[DEBUG] Window created")
-print("[DEBUG] window type:", type(window))
-print("[DEBUG] window.CreateTab type:", type(window.CreateTab))
-print("[DEBUG] window.CreateTab:", window.CreateTab)
 
-print("[DEBUG] Waiting for Rayfield to initialize...")
 task.wait(0.5)
-print("[DEBUG] Creating tabs...")
 
-print("[DEBUG] Calling window:CreateTab...")
 local tag = window:CreateTab("Tag Cheats", "target")
-print("[DEBUG] After CreateTab, tag:", tag)
-print("[DEBUG] tag type:", type(tag))
-print("[DEBUG] tag.CreateToggle:", type(tag.CreateToggle))
 local movement = window:CreateTab("Movement", "footprints")
-print("[DEBUG] Tab 'Movement' created")
 local experi = window:CreateTab("Experimental", "flask-conical")
-print("[DEBUG] Tab 'Experimental' created")
 local misc = window:CreateTab("Misc", "settings")
-print("[DEBUG] Tab 'Misc' created, type:", type(misc))
 
-print("[DEBUG] Creating sections...")
 local hitboxes = tag:CreateSection("Hitboxes")
-print("[DEBUG] Section 'Hitboxes' created, type:", type(hitboxes))
-local autotag = tag:CreateSection("Autotag [BETA]")
-print("[DEBUG] Section 'Autotag' created")
-local _humanoid = movement:CreateSection("Humanoid")
-print("[DEBUG] Section 'Humanoid' created")
-local physical = movement:CreateSection("Physical")
-print("[DEBUG] Section 'Physical' created")
-local exp_main = experi:CreateSection("Main")
-print("[DEBUG] Section 'Main' created")
-local visuals = experi:CreateSection("Visuals [BETA]")
-print("[DEBUG] Section 'Visuals' created")
-
 local hbcon = false
 local hbsize = 2
-print("[DEBUG] Creating Hitbox Extend toggle...")
-local htoggle = hitboxes:CreateToggle({
+tag:CreateToggle({
 	Name="Hitbox Extend",
 	CurrentValue=false,
 	Flag="Hitbox1",
 	Callback=function(value)
-		print("hitbox value" + value)
-		if value then
-			hbcon = true
-		else
-			hbcon = false
-		end
+		hbcon = value
 	end,
 })
-print("[DEBUG] Hitbox Extend toggle created")
-local hslider = hitboxes:CreateSlider({
+tag:CreateSlider({
 	Name="Hitbox Size",
-    Range={0, 15},
+	Range={0, 15},
 	CurrentValue=2,
 	Increment=1,
 	Suffix="studs",
-    Flag="HitboxSize1",
+	Flag="HitboxSize1",
 	Callback=function(value)
 		hbsize = value
 	end,
 })
+local autotag = tag:CreateSection("Autotag [BETA]")
 local atcon = false
 local at_teamcheck = false
 local at_runnercheck = true
-local autotoggle = autotag:CreateToggle({
+tag:CreateToggle({
 	Name="AutoTag",
 	CurrentValue=false,
 	Flag="AutoTag1",
 	Callback=function(value)
-		if value then
-			atcon = true
-		else
-			atcon = false
-		end
+		atcon = value
 	end,
-
 })
-local autoteamtoggle = autotag:CreateToggle({
+tag:CreateToggle({
 	Name="Team Check",
 	CurrentValue=false,
-    Flag="AutoTagTeamCheck1",
+	Flag="AutoTagTeamCheck1",
 	Callback=function(value)
 		at_teamcheck = value
 	end,
 })
-local autoplayertoggle = autotag:CreateToggle({
+tag:CreateToggle({
 	Name="Runner/Alive Check",
 	CurrentValue=true,
-    Flag="AutoTagPlayerCheck1",
+	Flag="AutoTagPlayerCheck1",
 	Callback=function(value)
 		at_runnercheck = value
 	end,
 })
 
+local _humanoid = movement:CreateSection("Humanoid")
+local physical = movement:CreateSection("Physical")
+local exp_main = experi:CreateSection("Main")
+local visuals = experi:CreateSection("Visuals [BETA]")
+
+
 local wsval,jpval = 30,32
 local wscon,jpcon = false,false
 local changeWs,changeJp
-local walktoggle = _humanoid:CreateToggle({
+local walktoggle = movement:CreateToggle({
 	Name="Walkspeed",
 	CurrentValue=false,
 	Flag="Walkspeed1",
 	Callback=function(value)
-		if value then
-			wscon = true
-			changeWs = function()
-				humanoid.WalkSpeed = wsval
-			end
-			changeWs()
-		else
-			wscon = false
-		end
+		wscon = value
 	end,
 })
-local walkslider = _humanoid:CreateSlider({
+local walkslider = movement:CreateSlider({
 	Name="Walkspeed Value",
-    Range={26, 65},
+	Range={26, 65},
 	CurrentValue=30,
 	Increment=1,
-    Flag="WalkspeedValue1",
+	Flag="WalkspeedValue1",
 	Callback=function(value)
 		wsval = value
 	end,
 })
-local jumptoggle = _humanoid:CreateToggle({
+local jumptoggle = movement:CreateToggle({
 	Name="Jumppower",
 	CurrentValue=false,
 	Flag="Jumppower1",
 	Callback=function(value)
-		if value then
-			jpcon = true
-			changeJp = function()
-				humanoid.UseJumpPower = true
-				humanoid.JumpPower = jpval
-			end
-			changeJp()
-		else
-			jpcon = false
-		end
+		jpcon = value
 	end,
 })
-local jumpslider = _humanoid:CreateSlider({
+local jumpslider = movement:CreateSlider({
 	Name="Jumppower Value",
-    Range={30, 90},
+	Range={30, 90},
 	CurrentValue=32,
 	Increment=1,
+	Flag="JumppowerValue1",
 	Callback=function(value)
 		jpval = value
 	end,
 })
+
 local fclimbcon,noclipcon = false,false
 local fmovecon = false
 local infj = false
-local infjump = physical:CreateToggle({
+physical:CreateToggle({
 	Name="Infinite Jump",
 	CurrentValue=false,
 	Flag="InfiniteJump1",
 	Callback=function(value)
-		if value then
-			infj = true
-		else
-			infj = false
-		end
+		infj = value
 	end,
 })
-local fastclim = physical:CreateToggle({
+physical:CreateToggle({
 	Name="Fast Climb",
 	CurrentValue=false,
 	Flag="FastClimb1",
 	Callback=function(value)
-		if value then
-			fclimbcon = true
-		else
-			fclimbcon = false
-		end
+		fclimbcon = value
 	end,
 })
-local freemov = physical:CreateToggle({
+physical:CreateToggle({
 	Name="Free Move",
 	CurrentValue=false,
 	Flag="FreeMove1",
 	Callback=function(value)
-		if value then
-			fmovecon = true
-		else
-			fmovecon = false
-		end
+		fmovecon = value
 	end,
 })
-local noclp = physical:CreateToggle({
+physical:CreateToggle({
 	Name="Noclip",
 	CurrentValue=false,
 	Flag="Noclip1",
 	Callback=function(value)
-		if value then
-			noclipcon = true
-		else
-			noclipcon = false
-		end
+		noclipcon = value
 	end,
 })
 
@@ -251,13 +180,10 @@ local autocoin = experi:CreateToggle({
 	CurrentValue=false,
 	Flag="AutoCollectCoins1",
 	Callback=function(value)
-		if value then
-			atcoin = true
-		else
-			atcoin = false
-		end
+		atcoin = value
 	end,
 })
+
 local esp = false
 local boxes = false
 local chams = false
@@ -267,79 +193,55 @@ local roles = false
 local teamcheck = true
 local tracerorigin = "Bottom"
 local rainbow_ = false
-local vision = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Enable ESP",
 	CurrentValue=false,
 	Flag="EnableESP1",
 	Callback=function(value)
-		if value then
-			esp = true
-		else
-			esp = false
-		end
+		esp = value
 	end,
 })
-local boxesp = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Box ESP",
 	CurrentValue=false,
 	Flag="BoxESP1",
 	Callback=function(value)
-		if value then
-			boxes = true
-		else
-			boxes = false
-		end
+		boxes = value
 	end,
 })
-local chamesp = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Cham ESP",
 	CurrentValue=false,
 	Flag="ChamESP1",
 	Callback=function(value)
-		if value then
-			chams = true
-		else
-			chams = false
-		end
+		chams = value
 	end,
 })
-local traceresp = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Tracer ESP",
 	CurrentValue=false,
 	Flag="TracerESP1",
 	Callback=function(value)
-		if value then
-			tracers = true
-		else
-			tracers = false
-		end
+		tracers = value
 	end,
 })
-local nameesp = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Name ESP",
 	CurrentValue=false,
 	Flag="NameESP1",
 	Callback=function(value)
-		if value then
-			names = true
-		else
-			names = false
-		end
+		names = value
 	end,
 })
-local roleesp = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Role ESP",
 	CurrentValue=false,
 	Flag="RoleESP1",
 	Callback=function(value)
-		if value then
-			roles = true
-		else
-			roles = false
-		end
+		roles = value
 	end,
 })
-local tracerdrop = visuals:CreateDropdown({
+visuals:CreateDropdown({
 	Name="Tracer Origin",
 	Options={"Bottom","Middle","Top","Mouse"},
 	CurrentOption={"Bottom"},
@@ -349,62 +251,47 @@ local tracerdrop = visuals:CreateDropdown({
 		tracerorigin = option
 	end,
 })
-local teamchk = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Team Check",
 	CurrentValue=true,
 	Flag="VisualsTeamCheck1",
 	Callback=function(value)
-		if value then
-			teamcheck = true
-		else
-			teamcheck = false
-		end
+		teamcheck = value
 	end,
 })
-local rainbowesp = visuals:CreateToggle({
+visuals:CreateToggle({
 	Name="Rainbow ESP",
 	CurrentValue=false,
 	Flag="RainbowESP1",
 	Callback=function(value)
-		if value then
-			rainbow_ = true
-		else
-			rainbow_ = false
-		end
-	end,
+		rainbow_ = value
+	end
 })
 
 local fbcon = false
-local fulllight = misc:CreateToggle({
+misc:CreateToggle({
 	Name="Fullbright",
 	CurrentValue=false,
 	Flag="Fullbright1",
 	Callback=function(value)
-		if value then
-			fbcon = true
-		else
-			fbcon = false
-		end
+		fbcon = value
 	end,
 })
 local acccon = false
-local nocolors = misc:CreateToggle({
+misc:CreateToggle({
 	Name="Anti-Color Change",
 	CurrentValue=false,
 	Flag="AntiColorChange1",
 	Callback=function(value)
-		if value then
-			acccon = true
-		else
-			acccon = false
-		end
+		acccon = value
 	end,
 })
 
+local Connections = {}
 
 local function connect(signal, callback)
 	local connection = signal:Connect(callback)
-	table.insert(lib.Connections, connection)
+	table.insert(Connections, connection)
 	return connection
 end
 
@@ -423,7 +310,7 @@ local fct__;fct__ = connect(humanoid.Climbing,function()
 		humanoid.Jump = true
 	end
 end)
--- connection, in case if you somehow get voided (with noclip/autocollect coins)...
+
 connect(you.CharacterAdded,function(_nchar)
 	char = _nchar
 	humanoid = char:FindFirstChildOfClass("Humanoid")
@@ -443,9 +330,9 @@ connect(you.CharacterAdded,function(_nchar)
 		end
 	end)
 end)
+
 connect(game:GetService("RunService").Stepped,function()
 	if hbcon then
-		print("[DEBUG] Hitbox Extend ACTIVE - size:", hbsize)
 		for _,i in next,game.Players:GetPlayers() do
 			if i ~= you then
 				local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
@@ -496,7 +383,6 @@ connect(game:GetService("RunService").Stepped,function()
 		end
 	end
 	if atcoin then
-		print("[DEBUG] Autocollect Coins ACTIVE")
 		if you.PlayerRole.Value ~= "Dead" then
 			for _,v in pairs(workspace:GetDescendants()) do
 				if v:IsA("MeshPart") and v.MeshId == "rbxassetid://8483581926" then
@@ -509,65 +395,60 @@ connect(game:GetService("RunService").Stepped,function()
 		char.LockMoveVector.Value = false
 	end
 end)
+
 connect(game:GetService("UserInputService").JumpRequest,function()
 	if infj then
 		humanoid.RootPart.Velocity = Vector3.new(humanoid.RootPart.Velocity.X,humanoid.JumpPower or humanoid.JumpHeight,humanoid.RootPart.Velocity.Z)
 	end
 end)
-connect(game:GetService("RunService").Heartbeat,function()
-	local currentCharacter = you.Character
-	local currentHumanoid = currentCharacter and currentCharacter:FindFirstChildOfClass("Humanoid")
-	local youroot = currentHumanoid and currentHumanoid.RootPart
-	if atcon and youroot then
-		for _,i in next,game.Players:GetPlayers() do
-			if i ~= you then
-				if at_runnercheck then
-					if you.PlayerRole.Value ~= "Runner" and you.PlayerRole.Value ~= "Dead" then
-						if at_teamcheck then
-							if i.PlayerRole.Value ~= you.PlayerRole.Value then
-								local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
-								if root then
-									local distance = (root.Position-youroot.Position).Magnitude
-									if distance <= root.Size.Magnitude then
-										mouse1click()
-									end
-								end
-							end
-						else
-							local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
-							if root then
-								local distance = (root.Position-youroot.Position).Magnitude
-								if distance <= root.Size.Magnitude then
-									mouse1click()
-								end
-							end
-						end
-					end
-				else
-					if at_teamcheck then
-						if i.PlayerRole.Value ~= you.PlayerRole.Value then
-							local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
-							if root then
-								local distance = (root.Position-youroot.Position).Magnitude
-								if distance <= root.Size.Magnitude then
-									mouse1click()
-								end
-							end
-						end
-					else
-						local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
-						if root then
-							local distance = (root.Position-youroot.Position).Magnitude
-							if distance <= root.Size.Magnitude then
-								mouse1click()
-							end
-						end
-					end
-				end
-			end
-		end
-	end
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    if not atcon then return end
+    
+    local currentCharacter = you.Character
+    if not currentCharacter then return end
+    
+    local currentHumanoid = currentCharacter:FindFirstChildOfClass("Humanoid")
+    if not currentHumanoid then return end
+    
+    local youroot = currentHumanoid.RootPart
+    if not youroot then return end
+    
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player == you then goto continue end
+        if not player.Character then goto continue end
+        
+        local targetHumanoid = player.Character:FindFirstChildOfClass("Humanoid")
+        if not targetHumanoid then goto continue end
+        
+        local targetRoot = targetHumanoid.RootPart
+        if not targetRoot then goto continue end
+        
+        -- Runner check
+        if at_runnercheck then
+            if you.PlayerRole.Value ~= "Runner" and you.PlayerRole.Value ~= "Dead" then
+                goto continue
+            end
+        end
+        
+        -- Team check
+        if at_teamcheck then
+            if player.PlayerRole.Value == you.PlayerRole.Value then
+                goto continue
+            end
+        end
+        
+        -- Distance check
+        local distance = (targetRoot.Position - youroot.Position).Magnitude
+        if distance <= targetRoot.Size.Magnitude then
+            mouse1click()
+            break -- Tag one player per frame
+        end
+        
+        ::continue::
+    end
 end)
+
 local function addEsp(target)
 	local function addBox()
 		local box = Drawing.new("Square")
@@ -780,6 +661,7 @@ local function addEsp(target)
 		end
 	end)
 end
+
 for _,i in next,game.Players:GetPlayers() do
 	if i ~= you then
 		addEsp(i)
@@ -791,24 +673,28 @@ connect(game.Players.PlayerAdded,function(i)
 	end
 end)
 
+rayfield:LoadConfiguration()
 
-local panic = misc:CreateKeybind({
-	Name = "Panic (removes script)",
-	CurrentKeybind = "'",
-	HoldToInteract = false,
-	Flag = "Panic1",
-	Callback = function(Keybind)
-		if Keybind.pressed
-		then rayfield.Destroy()
+local PanicKey = Enum.KeyCode.Minus
+local UISDestroyed = false
+
+local function destroyUI()
+	if not UISDestroyed then
+		UISDestroyed = true
+		if rayfield.Destroy then
+			rayfield:Destroy()
+		elseif window.Destroy then
+			window:Destroy()
 		end
 	end
-})
+end
 
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+	if not gameProcessed and input.KeyCode == PanicKey then
+		destroyUI()
+	end
+end)
 
-print("[DEBUG] Script fully loaded!")
-
-
-rayfield:LoadConfiguration()
 --[[
 
 ~ UPDATE LOGS: ~
