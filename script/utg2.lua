@@ -402,51 +402,59 @@ connect(game:GetService("UserInputService").JumpRequest,function()
 	end
 end)
 
-game:GetService("RunService").Heartbeat:Connect(function()
-    if not atcon then return end
-    
-    local currentCharacter = you.Character
-    if not currentCharacter then return end
-    
-    local currentHumanoid = currentCharacter:FindFirstChildOfClass("Humanoid")
-    if not currentHumanoid then return end
-    
-    local youroot = currentHumanoid.RootPart
-    if not youroot then return end
-    
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player == you then goto continue end
-        if not player.Character then goto continue end
-        
-        local targetHumanoid = player.Character:FindFirstChildOfClass("Humanoid")
-        if not targetHumanoid then goto continue end
-        
-        local targetRoot = targetHumanoid.RootPart
-        if not targetRoot then goto continue end
-        
-        -- Runner check
-        if at_runnercheck then
-            if you.PlayerRole.Value ~= "Runner" and you.PlayerRole.Value ~= "Dead" then
-                goto continue
-            end
-        end
-        
-        -- Team check
-        if at_teamcheck then
-            if player.PlayerRole.Value == you.PlayerRole.Value then
-                goto continue
-            end
-        end
-        
-        -- Distance check
-        local distance = (targetRoot.Position - youroot.Position).Magnitude
-        if distance <= targetRoot.Size.Magnitude then
-            mouse1click()
-            break -- Tag one player per frame
-        end
-        
-        ::continue::
-    end
+connect(game:GetService("RunService").Heartbeat,function()
+	local currentCharacter = you.Character
+	local currentHumanoid = currentCharacter and currentCharacter:FindFirstChildOfClass("Humanoid")
+	local youroot = currentHumanoid and currentHumanoid.RootPart
+	if atcon & youroot then
+		for _,i in next,game.Players:GetPlayers() do
+			if i ~= you then
+				if at_runnercheck then
+					if you.PlayerRole.Value ~= "Runner" and you.PlayerRole.Value ~= "Dead" then
+						if at_teamcheck then
+							if i.PlayerRole.Value ~= you.PlayerRole.Value then
+								local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
+								if root then
+									local distance = (root.Position-youroot.Position).Magnitude
+									if distance <= root.Size.Magnitude then
+										mouse1click()
+									end
+								end
+							end
+						else
+							local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
+							if root then
+								local distance = (root.Position-youroot.Position).Magnitude
+								if distance <= root.Size.Magnitude then
+									mouse1click()
+								end
+							end
+						end
+					end
+				else
+					if at_teamcheck then
+						if i.PlayerRole.Value ~= you.PlayerRole.Value then
+							local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
+							if root then
+								local distance = (root.Position-youroot.Position).Magnitude
+								if distance <= root.Size.Magnitude then
+									mouse1click()
+								end
+							end
+						end
+					else
+						local root = i.Character:FindFirstChildOfClass("Humanoid").RootPart
+						if root then
+							local distance = (root.Position-youroot.Position).Magnitude
+							if distance <= root.Size.Magnitude then
+								mouse1click()
+							end
+						end
+					end
+				end
+			end
+		end
+	end
 end)
 
 local function addEsp(target)
