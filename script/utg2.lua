@@ -85,8 +85,12 @@ local htoggle = hitboxes:CreateToggle({
 	CurrentValue=false,
 	Flag="Hitbox1",
 	Callback=function(value)
-		print("[DEBUG] Hitbox Extend callback:", value)
-		hbcon = value
+		print("hitbox value" + value)
+		if value then
+			hbcon = true
+		else
+			hbcon = false
+		end
 	end,
 })
 print("[DEBUG] Hitbox Extend toggle created")
@@ -108,13 +112,14 @@ local autotoggle = autotag:CreateToggle({
 	Name="AutoTag",
 	CurrentValue=false,
 	Flag="AutoTag1",
-	Callback=function(Value)
-		if Value == true
-		then atcon = true
-		elseif Value == false
-		then atcon = false
+	Callback=function(value)
+		if value then
+			atcon = true
+		else
+			atcon = false
 		end
-	end
+	end,
+
 })
 local autoteamtoggle = autotag:CreateToggle({
 	Name="Team Check",
@@ -141,7 +146,15 @@ local walktoggle = _humanoid:CreateToggle({
 	CurrentValue=false,
 	Flag="Walkspeed1",
 	Callback=function(value)
-		wscon = value
+		if value then
+			wscon = true
+			changeWs = function()
+				humanoid.WalkSpeed = wsval
+			end
+			changeWs()
+		else
+			wscon = false
+		end
 	end,
 })
 local walkslider = _humanoid:CreateSlider({
@@ -159,7 +172,16 @@ local jumptoggle = _humanoid:CreateToggle({
 	CurrentValue=false,
 	Flag="Jumppower1",
 	Callback=function(value)
-		jpcon = value
+		if value then
+			jpcon = true
+			changeJp = function()
+				humanoid.UseJumpPower = true
+				humanoid.JumpPower = jpval
+			end
+			changeJp()
+		else
+			jpcon = false
+		end
 	end,
 })
 local jumpslider = _humanoid:CreateSlider({
@@ -174,36 +196,52 @@ local jumpslider = _humanoid:CreateSlider({
 local fclimbcon,noclipcon = false,false
 local fmovecon = false
 local infj = false
-physical:CreateToggle({
+local infjump = physical:CreateToggle({
 	Name="Infinite Jump",
 	CurrentValue=false,
 	Flag="InfiniteJump1",
 	Callback=function(value)
-		infj = value
+		if value then
+			infj = true
+		else
+			infj = false
+		end
 	end,
 })
-physical:CreateToggle({
+local fastclim = physical:CreateToggle({
 	Name="Fast Climb",
 	CurrentValue=false,
 	Flag="FastClimb1",
 	Callback=function(value)
-		fclimbcon = value
+		if value then
+			fclimbcon = true
+		else
+			fclimbcon = false
+		end
 	end,
 })
-physical:CreateToggle({
+local freemov = physical:CreateToggle({
 	Name="Free Move",
 	CurrentValue=false,
 	Flag="FreeMove1",
 	Callback=function(value)
-		fmovecon = value
+		if value then
+			fmovecon = true
+		else
+			fmovecon = false
+		end
 	end,
 })
-physical:CreateToggle({
+local noclp = physical:CreateToggle({
 	Name="Noclip",
 	CurrentValue=false,
 	Flag="Noclip1",
 	Callback=function(value)
-		noclipcon = value
+		if value then
+			noclipcon = true
+		else
+			noclipcon = false
+		end
 	end,
 })
 
@@ -213,7 +251,11 @@ local autocoin = experi:CreateToggle({
 	CurrentValue=false,
 	Flag="AutoCollectCoins1",
 	Callback=function(value)
-		atcoin = value
+		if value then
+			atcoin = true
+		else
+			atcoin = false
+		end
 	end,
 })
 local esp = false
@@ -225,55 +267,79 @@ local roles = false
 local teamcheck = true
 local tracerorigin = "Bottom"
 local rainbow_ = false
-visuals:CreateToggle({
+local vision = visuals:CreateToggle({
 	Name="Enable ESP",
 	CurrentValue=false,
 	Flag="EnableESP1",
 	Callback=function(value)
-		esp = value
+		if value then
+			esp = true
+		else
+			esp = false
+		end
 	end,
 })
-visuals:CreateToggle({
+local boxesp = visuals:CreateToggle({
 	Name="Box ESP",
 	CurrentValue=false,
 	Flag="BoxESP1",
 	Callback=function(value)
-		boxes = value
+		if value then
+			boxes = true
+		else
+			boxes = false
+		end
 	end,
 })
-visuals:CreateToggle({
+local chamesp = visuals:CreateToggle({
 	Name="Cham ESP",
 	CurrentValue=false,
 	Flag="ChamESP1",
 	Callback=function(value)
-		chams = value
+		if value then
+			chams = true
+		else
+			chams = false
+		end
 	end,
 })
-visuals:CreateToggle({
+local traceresp = visuals:CreateToggle({
 	Name="Tracer ESP",
 	CurrentValue=false,
 	Flag="TracerESP1",
 	Callback=function(value)
-		tracers = value
+		if value then
+			tracers = true
+		else
+			tracers = false
+		end
 	end,
 })
-visuals:CreateToggle({
+local nameesp = visuals:CreateToggle({
 	Name="Name ESP",
 	CurrentValue=false,
 	Flag="NameESP1",
 	Callback=function(value)
-		names = value
+		if value then
+			names = true
+		else
+			names = false
+		end
 	end,
 })
-visuals:CreateToggle({
+local roleesp = visuals:CreateToggle({
 	Name="Role ESP",
 	CurrentValue=false,
 	Flag="RoleESP1",
 	Callback=function(value)
-		roles = value
+		if value then
+			roles = true
+		else
+			roles = false
+		end
 	end,
 })
-visuals:CreateDropdown({
+local tracerdrop = visuals:CreateDropdown({
 	Name="Tracer Origin",
 	Options={"Bottom","Middle","Top","Mouse"},
 	CurrentOption={"Bottom"},
@@ -283,39 +349,55 @@ visuals:CreateDropdown({
 		tracerorigin = option
 	end,
 })
-visuals:CreateToggle({
+local teamchk = visuals:CreateToggle({
 	Name="Team Check",
 	CurrentValue=true,
 	Flag="VisualsTeamCheck1",
 	Callback=function(value)
-		teamcheck = value
+		if value then
+			teamcheck = true
+		else
+			teamcheck = false
+		end
 	end,
 })
-visuals:CreateToggle({
+local rainbowesp = visuals:CreateToggle({
 	Name="Rainbow ESP",
 	CurrentValue=false,
 	Flag="RainbowESP1",
 	Callback=function(value)
-		rainbow_ = value
-	end
+		if value then
+			rainbow_ = true
+		else
+			rainbow_ = false
+		end
+	end,
 })
 
 local fbcon = false
-misc:CreateToggle({
+local fulllight = misc:CreateToggle({
 	Name="Fullbright",
 	CurrentValue=false,
 	Flag="Fullbright1",
 	Callback=function(value)
-		fbcon = value
+		if value then
+			fbcon = true
+		else
+			fbcon = false
+		end
 	end,
 })
 local acccon = false
-misc:CreateToggle({
+local nocolors = misc:CreateToggle({
 	Name="Anti-Color Change",
 	CurrentValue=false,
 	Flag="AntiColorChange1",
 	Callback=function(value)
-		acccon = value
+		if value then
+			acccon = true
+		else
+			acccon = false
+		end
 	end,
 })
 
@@ -709,34 +791,24 @@ connect(game.Players.PlayerAdded,function(i)
 	end
 end)
 
-rayfield:LoadConfiguration()
 
-local PanicKey = Enum.KeyCode.Minus
-local UISDestroyed = false
-
-local function destroyUI()
-	if not UISDestroyed then
-		UISDestroyed = true
-		print("[DEBUG] PANIC KEY PRESSED - Destroying UI...")
-		
-		if rayfield.Destroy then
-			rayfield:Destroy()
-		elseif window.Destroy then
-			window:Destroy()
+local panic = misc:CreateKeybind({
+	Name = "Panic (removes script)",
+	CurrentKeybind = "'",
+	HoldToInteract = false,
+	Flag = "Panic1",
+	Callback = function(Keybind)
+		if Keybind.pressed
+		then rayfield.Destroy()
 		end
-		
-		print("[DEBUG] UI Destroyed!")
 	end
-end
+})
 
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-	if not gameProcessed and input.KeyCode == PanicKey then
-		destroyUI()
-	end
-end)
 
 print("[DEBUG] Script fully loaded!")
 
+
+rayfield:LoadConfiguration()
 --[[
 
 ~ UPDATE LOGS: ~
