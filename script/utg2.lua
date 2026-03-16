@@ -43,13 +43,19 @@ local window = rayfield:CreateWindow({
 
 })
 print("[DEBUG] Window created")
+print("[DEBUG] window type:", type(window))
+print("[DEBUG] window.CreateTab type:", type(window.CreateTab))
+print("[DEBUG] window.CreateTab:", window.CreateTab)
 
 print("[DEBUG] Waiting for Rayfield to initialize...")
 task.wait(0.5)
 print("[DEBUG] Creating tabs...")
 
+print("[DEBUG] Calling window:CreateTab...")
 local tag = window:CreateTab("Tag Cheats", "target")
-print("[DEBUG] Tab 'Tag Cheats' created, type:", type(tag))
+print("[DEBUG] After CreateTab, tag:", tag)
+print("[DEBUG] tag type:", type(tag))
+print("[DEBUG] tag.CreateToggle:", type(tag.CreateToggle))
 local movement = window:CreateTab("Movement", "footprints")
 print("[DEBUG] Tab 'Movement' created")
 local experi = window:CreateTab("Experimental", "flask-conical")
@@ -74,7 +80,7 @@ print("[DEBUG] Section 'Visuals' created")
 local hbcon = false
 local hbsize = 2
 print("[DEBUG] Creating Hitbox Extend toggle...")
-local htoggle = tag:CreateToggle({
+local htoggle = hitboxes:CreateToggle({
 	Name="Hitbox Extend",
 	CurrentValue=false,
 	Flag="Hitbox1",
@@ -84,7 +90,7 @@ local htoggle = tag:CreateToggle({
 	end,
 })
 print("[DEBUG] Hitbox Extend toggle created")
-local hslider = tag:CreateSlider({
+local hslider = hitboxes:CreateSlider({
 	Name="Hitbox Size",
     Range={0, 15},
 	CurrentValue=2,
@@ -98,7 +104,7 @@ local hslider = tag:CreateSlider({
 local atcon = false
 local at_teamcheck = false
 local at_runnercheck = true
-local autotoggle = tag:CreateToggle({
+local autotoggle = autotag:CreateToggle({
 	Name="AutoTag",
 	CurrentValue=false,
 	Flag="AutoTag1",
@@ -110,7 +116,7 @@ local autotoggle = tag:CreateToggle({
 		end
 	end
 })
-local autoteamtoggle = tag:CreateToggle({
+local autoteamtoggle = autotag:CreateToggle({
 	Name="Team Check",
 	CurrentValue=false,
     Flag="AutoTagTeamCheck1",
@@ -118,7 +124,7 @@ local autoteamtoggle = tag:CreateToggle({
 		at_teamcheck = value
 	end,
 })
-local autoplayertoggle = tag:CreateToggle({
+local autoplayertoggle = autotag:CreateToggle({
 	Name="Runner/Alive Check",
 	CurrentValue=true,
     Flag="AutoTagPlayerCheck1",
@@ -130,7 +136,7 @@ local autoplayertoggle = tag:CreateToggle({
 local wsval,jpval = 30,32
 local wscon,jpcon = false,false
 local changeWs,changeJp
-local walktoggle = movement:CreateToggle({
+local walktoggle = _humanoid:CreateToggle({
 	Name="Walkspeed",
 	CurrentValue=false,
 	Flag="Walkspeed1",
@@ -138,7 +144,7 @@ local walktoggle = movement:CreateToggle({
 		wscon = value
 	end,
 })
-local walkslider = movement:CreateSlider({
+local walkslider = _humanoid:CreateSlider({
 	Name="Walkspeed Value",
     Range={26, 65},
 	CurrentValue=30,
@@ -148,7 +154,7 @@ local walkslider = movement:CreateSlider({
 		wsval = value
 	end,
 })
-local jumptoggle = movement:CreateToggle({
+local jumptoggle = _humanoid:CreateToggle({
 	Name="Jumppower",
 	CurrentValue=false,
 	Flag="Jumppower1",
@@ -156,7 +162,7 @@ local jumptoggle = movement:CreateToggle({
 		jpcon = value
 	end,
 })
-local jumpslider = movement:CreateSlider({
+local jumpslider = _humanoid:CreateSlider({
 	Name="Jumppower Value",
     Range={30, 90},
 	CurrentValue=32,
